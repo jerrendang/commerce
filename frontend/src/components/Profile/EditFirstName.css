@@ -1,0 +1,7 @@
+input {
+    padding-inline: .5em;
+}
+
+.bordered{
+    border: black 1px solid;
+}
