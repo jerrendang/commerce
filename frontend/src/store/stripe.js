@@ -18,8 +18,8 @@ export const createAccountLink = async (stripe_id, user_id) => {
         method: 'POST',
         body: JSON.stringify({
             account_id: stripe_id,
-            refresh_url: `http://localhost:3000`,
-            return_url: `http://localhost:8000/api/stripe/return?user_id=${user_id}&stripe_account=${stripe_id}`
+            refresh_url: `https://commerce-gfue2f5gm-jerrendangs-projects.vercel.app`,
+            return_url: `https://commerce-2mri.onrender.com/api/stripe/return?user_id=${user_id}&stripe_account=${stripe_id}`
         })
     });
 

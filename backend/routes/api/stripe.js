@@ -46,8 +46,8 @@ router.put('/checkout', async (req, res, next) => {
                 destination: destination_stripe_account_id,
             },
         },
-        success_url: `http://localhost:8000/api/stripe/success?user_id=${user_id}&price=${price}&address=${address}&seller_id=${seller_id}`,
-        cancel_url: 'http://localhost:3000/',
+        success_url: `https://commerce-2mri.onrender.com/api/stripe/success?user_id=${user_id}&price=${price}&address=${address}&seller_id=${seller_id}`,
+        cancel_url: 'https://commerce-gfue2f5gm-jerrendangs-projects.vercel.app',
     });
 
     res.json({ session });
@@ -64,7 +64,6 @@ router.get('/secret', async (req, res, next) => {
         
 });
 
-// success_url: `http://localhost:8000/api/stripe/success?user_id=${user_id}&price=${price}`
 router.get('/success', async (req, res, next) => {
     const {
         user_id,
@@ -79,7 +78,7 @@ router.get('/success', async (req, res, next) => {
         seller_id
     });
 
-    const redirectLink = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/success'
+    const redirectLink = process.env.NODE_ENV === 'production' ? 'https://commerce-gfue2f5gm-jerrendangs-projects.vercel.app/success' : 'http://localhost:3000/success'
 
     res.redirect(redirectLink)
 })
@@ -91,8 +90,8 @@ router.get('/return', async (req, res, next) => {
         await user.update({stripe_verified: true})
     }
 
-    const redirectLink = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000/'
-    res.redirect(redirectLink); // set production link here too ////////////////////////////////////
+    const redirectLink = process.env.NODE_ENV === 'production' ? 'https://commerce-gfue2f5gm-jerrendangs-projects.vercel.app' : 'http://localhost:3000/'
+    res.redirect(redirectLink);
 })
 
 router.post('/account', async (req, res, next) => {

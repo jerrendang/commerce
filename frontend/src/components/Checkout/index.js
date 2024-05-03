@@ -64,21 +64,6 @@ const Checkout = ({isLoaded}) => {
         }
     }, [checkoutUrl])
 
-    // useEffect(() => {
-    //     setCheckoutLoading(true);
-    //     if (itemIds.length > 0) {
-    //         getItemsFromIdArr(itemIds)
-    //             .then(data => setCheckoutItems(data))
-    //             .then(() => createPaymentIntent(checkoutItems))
-    //             .then(clientSecret => setOptions({clientSecret: clientSecret}))
-    //             .then(() => setCheckoutLoading(false))
-    //     }
-    //     else {
-    //         setCheckoutLoading(false);
-    //         setCheckoutItems([])
-    //     }
-    // }, [itemIds])
-
     if (checkoutLoading){
         return <Loading />
     }

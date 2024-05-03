@@ -10,7 +10,7 @@ export const fetcher = async (url, options) => {
             options.headers['Content-Type'] || 'application/json';
     }
 
-    url = process.env.NODE_ENV === 'production' ? '' + url : 'http://localhost:8000' + url ///////////////////////////// fix production url
+    url = process.env.NODE_ENV === 'production' ? 'https://commerce-2mri.onrender.com' + url : 'http://localhost:8000' + url ///////////////////////////// fix production url
 
     const res = await fetch(url, options);
 
