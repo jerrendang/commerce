@@ -20,3 +20,13 @@ export const fetcher = async (url, options) => {
 
     return res;
 }
+
+export const getUserOrders = async (buyer_id) => {
+    const res = await fetcher(`/api/order?buyer_id=${buyer_id}`, {
+        method: 'GET'
+    })
+
+    const data = res.json();
+
+    return data;
+}

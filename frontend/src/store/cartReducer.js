@@ -1,3 +1,4 @@
+import { fetcher } from "./fetch";
 import { getItemByID } from "./item";
 
 const ADD = 'cart/add_to_cart';
@@ -21,12 +22,36 @@ export const resetCart = (idArr) => {
     }
 }
 
-export const addToCart = (itemId) => {
+const add = (itemId) => {
     return {
         type: ADD,
         itemId
     }
 }
+
+export const addToCart = (itemId) => async (dispatch) => {
+    const res = await fetcher(`/api/item?item_id=${itemId}&field=in_cart&value=true`, {
+        method: 'PUT'
+    })
+
+    if (res.ok){
+        const data = await res.json();
+        dispatch(add(itemId))
+    }
+}
+
+// router.put('/', asyncHandler(async (req, res, next) => {
+//     const {
+//         item_id,
+//         field,
+//         value
+//     } = req.query
+
+//     const item = await Item.findByPk(item_id);
+
+//     await item.update({ [field]: value });
+
+//     res.json({ item });
 
 export const removeFromCart = (itemId) => {
     return {

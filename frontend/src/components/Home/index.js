@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 
 import { createItem, getItem } from '../../store/item';
 import Loading from '../Loading';
 import ItemTile from '../ItemTile';
 import { fetcher } from '../../store/fetch';
+import { rerender } from '../../store/sessionReducer';
+import categories from '../../assets/clothing_categories.json';
 
 const homeCategories = ["Listed", "Sold"]
 
@@ -15,7 +17,9 @@ const Home = ({isLoaded}) => {
     const [homeCategory, setHomeCategory] = useState(0);
     const [uploadedFile, setFile] = useState(null);
     const [itemPhotoName, setPhotoName] = useState('');
+    const [createItemErr, setCreateErr] = useState('');
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const [homeItems, setHomeItems] = useState([]);
     const [newItem, setNewItem] = useState({});
@@ -24,18 +28,27 @@ const Home = ({isLoaded}) => {
 
     const handleCreateItem = (e) => {
         e.preventDefault();
-        const item = {
-            userID:user.id,
-            price: newItem.price,
-            name: newItem.name,
-            description: newItem.description,
-            category: newItem.category,
-            binary: uploadedFile,
-            key: itemPhotoName
+        if (!newItem.price || !newItem.name || !newItem.description || !newItem.category || !uploadedFile){
+            setCreateErr('Fill in all the fields.')
         }
-        createItem(item);
-        e.target.reset();
-        setNewItem({});
+        else{
+            const item = {
+                userID: user.id,
+                price: newItem.price,
+                name: newItem.name,
+                description: newItem.description,
+                category: newItem.category,
+                binary: uploadedFile,
+                key: itemPhotoName
+            }
+            createItem(item)
+                .then(() => setHomeFetching(true))
+                .then(() => setNewItem({}))
+                .then(() => fetchHomeItems())
+                .then(() => dispatch(rerender()))
+                .then(() => setHomeFetching(false))
+            e.target.reset();
+        }
     }
 
     const handleUpload = (e) => {
@@ -50,6 +63,7 @@ const Home = ({isLoaded}) => {
     }
 
     const handleNewItemInput = (e, field) => {
+        setCreateErr('');
         setNewItem({
             ...newItem,
             [field]: e.target.value
@@ -106,6 +120,11 @@ const Home = ({isLoaded}) => {
         </div> 
 
         <form className='flex flex-col' onSubmit={handleCreateItem}>
+            {
+                createItemErr && (
+                    <div>{createItemErr}</div>
+                )
+            }
             <span>
                 <label>Name:</label>
                 <input type='text' onChange={(e) => handleNewItemInput(e, 'name')}/>
@@ -119,14 +138,20 @@ const Home = ({isLoaded}) => {
                 <input type='number' onChange={(e) => handleNewItemInput(e, 'price')} />
             </span>
             <span>
-                <label>Quantity</label>
-                <input type='number' onChange={(e) => handleNewItemInput(e, 'quantity')} />
+                <label>Category</label>
+                <select onChange={(e) => handleNewItemInput(e, 'category')} defaultValue=''>
+                    <option value='' disabled></option>
+                    {
+                        categories.exploreCategories.slice(1).map((category, idx) => {
+                            return (
+                                <option key={idx} value={category}>{category}</option>
+                            )
+                        })
+                    }
+                </select>
             </span>
             <span>
-                Category here
-            </span>
-            <span>
-                <input type='file' accept='image/png, image/jpeg' onChange={handleUpload} />
+                <input type='file' accept='image/png' onChange={handleUpload} />
             </span>
             <button type='submit'>Create item</button>
         </form>
@@ -144,7 +169,7 @@ const Home = ({isLoaded}) => {
                         {
                             homeItems.map((item, idx) => (
                                 <div key={idx}>
-                                    <ItemTile item={item} />
+                                    <ItemTile item={item} seller={true}/>
                                 </div>
                             ))
                         }

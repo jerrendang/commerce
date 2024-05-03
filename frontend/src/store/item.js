@@ -47,6 +47,33 @@ export const createItem = async ({userID, price, name, description, category, bi
     }
 }
 
+export const deleteItem = async (item_id, photo_key) => {
+    const data = await s3Client.send(
+        new DeleteObjectCommand({
+            Bucket: process.env.REACT_APP_AWS_BUCKET_NAME,
+            Key: photo_key
+        })
+    )
+
+    const res = await fetcher(`/api/item?item_id=${item_id}`, {
+        method: 'DELETE'
+    });
+
+    if (res.ok){
+        return res.json();
+    }
+}
+
+export const editItemFunc = async (item_id, field, value) => {
+    const res = await fetcher(`/api/item?item_id=${item_id}&field=${field}&value=${value}`, {
+        method: 'PUT'
+    })
+
+    if (res.ok){
+        return await res.json();
+    }
+}
+
 export const getItem = async (user_id, sold) => {
     const res = await fetcher(`/api/item?user_id=${user_id}&sold=${sold}`, {
         method: 'GET'
@@ -67,8 +94,8 @@ export const getItemByID = async (item_id) => {
     }
 }
 
-export const getExploreItems = async (category, count, page) => {
-    const res = await fetcher(`/api/item/explore?category=${category}&count=${count}&page=${page}`, {
+export const getExploreItems = async (category, count, page, user_id) => {
+    const res = await fetcher(`/api/item/explore?category=${category}&count=${count}&page=${page}&user_id=${user_id}`, {
         method: 'GET'
     })   
 

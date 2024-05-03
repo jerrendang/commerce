@@ -10,8 +10,8 @@ const VerifyPage = ({isLoaded}) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const handleVerifyUser = async (user_id) => {
-        const res = await fetcher(`/api/verify/send?userID=${user_id}&to=${user.email}`,{
+    const handleVerifyUser = async () => {
+        const res = await fetcher(`/api/verify/send?userID=${user.id}&to=${user.email}`,{
             method: 'GET'
         });
         if (res.ok){
@@ -21,8 +21,7 @@ const VerifyPage = ({isLoaded}) => {
 
     useEffect(() => {
         if (isLoaded) {
-            console.log('//////////')
-            console.log(user)
+            console.log(user.verified)
             if (JSON.stringify(user) === '{}') {
                 navigate('/')
             }
@@ -36,7 +35,7 @@ const VerifyPage = ({isLoaded}) => {
         if (isLoaded){
             if (JSON.stringify(user) !== '{}'){
                 if (!user.verified) {
-                    handleVerifyUser(user.id)
+                    handleVerifyUser()
                 }
             }
         }

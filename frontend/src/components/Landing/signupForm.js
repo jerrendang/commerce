@@ -1,14 +1,16 @@
 import { useState } from "react";
-import {useDispatch} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 
 import {signup} from '../../store/sessionReducer';
+import { createStripeAccount } from "../../store/stripe";
 
 const SignupForm = () => {
     const [errors, setErrors] = useState([]);
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const {user} = useSelector(state => state.session);
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
@@ -16,9 +18,10 @@ const SignupForm = () => {
         e.preventDefault();
 
         dispatch(signup(username, email, password))
-            .then(() => navigate('/home'))
+            .then(() => navigate('/verify'))
             .catch(err => setErrors(err.errors))
     }
+
   return (
     <div>
           <div>Signup</div>

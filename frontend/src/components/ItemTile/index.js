@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 import {useSelector, useDispatch} from 'react-redux';
 
-import { signURL } from "../../store/item";
-import { changeModal } from "../../store/itemModal";
+import { editItemFunc, signURL } from "../../store/item";
+import { changeEditModal, changeModal } from "../../store/itemModal";
 
 const ItemTile = ({item, sold = false, seller = false}) => {
     const [imageURL, setImageURL] = useState('');
@@ -14,7 +14,13 @@ const ItemTile = ({item, sold = false, seller = false}) => {
     }
 
     const handleModalShow = (e) => {
-        dispatch(changeModal(true, item, imageURL))
+        if (seller){
+            dispatch(changeEditModal(true, item))
+        }
+        else{
+            editItemFunc(item.id, 'popularity_score', item.popularity_score + 1)
+                .then(() => dispatch(changeModal(true, item, imageURL)))
+        }          
     }
 
     useEffect(() => {
@@ -22,6 +28,7 @@ const ItemTile = ({item, sold = false, seller = false}) => {
             handleGetURL();
         }
     }, [item])
+
     return (
         // delete item
         // edit item

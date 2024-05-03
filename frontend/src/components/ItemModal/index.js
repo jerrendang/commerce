@@ -3,6 +3,7 @@ import {useSelector, useDispatch} from 'react-redux';
 
 import { changeModal } from "../../store/itemModal";
 import { addToCart } from "../../store/cartReducer";
+import { rerender } from "../../store/sessionReducer";
 
 const ItemModal = ({isLoaded}) => {
     const user = useSelector(state => state.session.user);
@@ -12,8 +13,10 @@ const ItemModal = ({isLoaded}) => {
     const dispatch = useDispatch();
 
     const handleAddToCart = (e) => {
-        dispatch(addToCart(item.id));
-        dispatch(changeModal(false));
+        dispatch(addToCart(item.id))
+            .then(() => dispatch(changeModal(false)))
+            .then(() => dispatch(rerender()))
+
     }
 
     const handleBackgroundClick = (e) => {

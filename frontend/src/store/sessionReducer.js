@@ -1,7 +1,39 @@
 import { fetcher } from "./fetch";
+import { createStripeAccount } from "./stripe";
 
 const ADD = 'session/ADD';
 const REMOVE = 'session/REMOVE';
+const RERENDER = 'session/RERENDER_APP';
+
+export const newNotification = async (seller_id, buyer_id, address, item_id) => {
+    const res = await fetcher('/api/session/notification', {
+        method: 'POST',
+        body: JSON.stringify({
+            user_id: seller_id,
+            buyer_id,
+            item_id,
+            address
+        })
+    })
+
+    const data = res.json();
+
+    return data;
+}
+
+export const getNotifications = async (user_id) => {
+    const res = await fetcher(`/api/session/notification?user_id=${user_id}`, {
+        method: 'GET'
+    })
+
+    return res.json();
+}
+
+export const rerender = () => {
+    return {
+        type: RERENDER
+    }
+}
 
 const restore = (user) => {
     return {
@@ -75,6 +107,7 @@ export const signup = ( username, email, password ) => async (dispatch) => {
     })
     if (res.ok){
         const {user} = await res.json();
+        createStripeAccount(user.id);
         return dispatch(addSession(user));
     }
 }
@@ -108,6 +141,15 @@ export const sessionReducer = (state = {user: {}}, action) => {
             newState = {
                 ...state,
                 user: {}
+            }
+            return newState;
+        case RERENDER:
+            newState = {
+                ...state,
+                user: {
+                    ...state.user,
+                    rerender: state.rerender ? !state.rerender: true
+                }
             }
             return newState;
         default:

@@ -15,9 +15,12 @@ import Cart from './components/Cart';
 import Profile from './components/Profile';
 import VerifyPage from './components/VerifyPage';
 import ItemModal from './components/ItemModal';
-import BankForm from './components/BankForm';
 import Loading from './components/Loading';
 import Checkout from './components/Checkout';
+import VerifyStripe from './components/VerifyStripe';
+import EditItem from './components/EditItem';
+import Orders from './components/Orders';
+import OrderSuccess from './components/OrderSuccess';
 
 function App() {
   const [isLoaded, setLoaded] = useState(false);
@@ -42,7 +45,7 @@ function App() {
   }, [isLoaded])
 
   useEffect(() => {
-    if (isLoaded){
+    if (isLoaded && JSON.stringify(user) !== '{}'){
       if (localStorage.getItem('user_id') && parseInt(localStorage.getItem('user_id')) === user.id) {
         if (localStorage.getItem('cart')){
           dispatch(resetCart(JSON.parse(localStorage.getItem('cart'))))
@@ -52,7 +55,9 @@ function App() {
         }
       }
       else {
-        localStorage.setItem('user_id', user.id)
+        localStorage.setItem('user_id', user.id);
+        localStorage.removeItem('cart');
+        dispatch(resetCart([]))
       }
     }
   }, [user, isLoaded])
@@ -65,18 +70,21 @@ function App() {
     <>
     {
       isLoaded && (
-        <div className="App flex flex-row">
+        <div className="App flex flex-row min-w-[1440px]">
           <Nav isLoaded/>
           <Routes>
             <Route exact path='/verify' element={<VerifyPage isLoaded />} />
-            <Route exact path='/home' element={user.bank_id ? <Home isLoaded/>: <BankForm />} />
+            <Route exact path='/home' element={user.stripe_verified ? <Home isLoaded />: <VerifyStripe isLoaded/>} />
             <Route exact path='/explore' element={<Explore isLoaded />} />
             <Route exact path='/cart' element={<Cart isLoaded />} />
             <Route exact path='/profile' element={<Profile isLoaded />} />
             <Route exacr path='/checkout' element={<Checkout isLoaded />} />
+            <Route exact path='/orders' element={<Orders isLoaded />} />
+            <Route exact path='/success' element={<OrderSuccess />} />
             <Route exact path='/' element={<Landing isLoaded />} />
           </Routes>
           <ItemModal isLoaded/>
+          <EditItem isLoaded />
       </div>
       )
     }

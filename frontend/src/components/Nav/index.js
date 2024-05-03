@@ -30,10 +30,11 @@ const Nav = ({isLoaded}) => {
     {
         showNav && (
             <div className='flex flex-col sticky bg-[red] w-[8vw] h-[100vh]'>
-                <span><button onClick={e => navigate('/home')}>Home</button></span>
+                <span><button onClick={e => navigate('/home')}>Your Shop</button></span>
                 <span><button onClick={e => navigate('/explore')}>Explore</button></span>
                 <span><button onClick={e => navigate('/cart')}>Cart</button></span>
                 <span><button onClick={e => navigate('/profile')}>Profile</button></span>
+                <span><button onClick={e => navigate('/orders')}>Orders</button></span>
                 <span>
                     <LogoutButton />
                 </span>

@@ -1,67 +1,95 @@
 import React, { useEffect, useState } from "react";
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import {useNavigate} from 'react-router-dom';
 
 import { getItemsFromIdArr } from "../../store/cartReducer";
 import { createPaymentIntent } from "../../store/payment";
+import { createCheckoutSession } from "../../store/payment";
 import Loading from "../Loading";
 import CheckoutForm from "./checkoutForm";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY)
 
 const Checkout = ({isLoaded}) => {
-    const [checkoutLoading, setCheckoutLoading] = useState(true);
+    const [checkoutLoading, setCheckoutLoading] = useState(false);
     const [checkoutItems, setCheckoutItems] = useState([]);
     const [options, setOptions] = useState({});
+    const [checkoutUrl, setCheckoutUrl] = useState('');
+    const [address, setAddress] = useState('');
+    const [addressSubmit, setAddressSubmit] = useState(false);
     const {user} = useSelector(state => state.session);
     const {itemIds} = useSelector(state => state.cart);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleAddressSubmit = (e) => {
+        e.preventDefault();
+        setAddressSubmit(true);
+        localStorage.setItem('address',address)
+    }
 
     useEffect(() => {
         if (isLoaded) {
-            if (JSON.stringify(user) === '{}') {
+            if (JSON.stringify(user) === '{}' || itemIds.length <= 0) {
                 navigate('/')
             }
             else if (!user.verified) {
                 navigate('/verify')
             }
         }
-    }, [isLoaded, user, navigate])
+    }, [isLoaded, user, navigate, itemIds])
 
     useEffect(() => {
-        setCheckoutLoading(true);
-        if (itemIds.length > 0) {
-            getItemsFromIdArr(itemIds)
-                .then(data => setCheckoutItems(data))
-                .then(() => createPaymentIntent(checkoutItems))
-                .then(clientSecret => setOptions({clientSecret: clientSecret}))
-                .then(() => setCheckoutLoading(false))
+        if (addressSubmit){
+            setCheckoutLoading(true)
+            if (itemIds.length > 0) {
+                getItemsFromIdArr(itemIds)
+                    .then(data => setCheckoutItems(data))
+            }
         }
-        else {
-            setCheckoutLoading(false);
-            setCheckoutItems([])
+    }, [itemIds, addressSubmit])
+
+    useEffect(() => {
+        if (checkoutItems.length > 0) {
+            createCheckoutSession(checkoutItems, user.stripe_account_id, user.id, address)
+                .then(data => setCheckoutUrl(data.session.url))
         }
-    }, [itemIds])
+    }, [checkoutItems])
+
+    useEffect(() => {
+        if (checkoutUrl){
+            window.location.href = checkoutUrl
+        }
+    }, [checkoutUrl])
+
+    // useEffect(() => {
+    //     setCheckoutLoading(true);
+    //     if (itemIds.length > 0) {
+    //         getItemsFromIdArr(itemIds)
+    //             .then(data => setCheckoutItems(data))
+    //             .then(() => createPaymentIntent(checkoutItems))
+    //             .then(clientSecret => setOptions({clientSecret: clientSecret}))
+    //             .then(() => setCheckoutLoading(false))
+    //     }
+    //     else {
+    //         setCheckoutLoading(false);
+    //         setCheckoutItems([])
+    //     }
+    // }, [itemIds])
 
     if (checkoutLoading){
         return <Loading />
     }
 
     return (
-        <>
-            {
-                isLoaded && (
-                    <div>
-                        <Elements stripe={stripePromise} options={options}>
-                            <CheckoutForm />
-                        </Elements>
-                    </div>
-                )
-            }
-        </>
-  )
+        <form onSubmit={handleAddressSubmit}>
+            <label>Where should we send your order?</label>
+            <input type='text' onChange={e => setAddress(e.target.value)}></input>
+            <button type='submit'>Submit</button>
+        </form>
+    )
 };
 
 export default Checkout;

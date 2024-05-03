@@ -18,6 +18,14 @@ const Explore = ({isLoaded}) => {
   const {user} = useSelector(state => state.session);
   // fetch and query by popularity score
 
+  const handleNextPage = (e) => {
+    setExplorePage(explorePage + 1)
+  }
+
+  const handleBackPage = (e) => {
+    setExplorePage(explorePage - 1)
+  }
+
   useEffect(() => {
     if (isLoaded) {
       if (JSON.stringify(user) === '{}') {
@@ -30,14 +38,12 @@ const Explore = ({isLoaded}) => {
   }, [isLoaded, user, navigate])
 
   useEffect(() => { // change page and count to programmatic
-    getExploreItems(selectedCategory, exploreCount, explorePage)
-      .then((data) => setExploreItems(data.items))
-      .then(() => setExploreLoading(false))
-  }, [user, selectedCategory])
-
-  useEffect(() => {
-    console.log(exploreItems);
-  }, [exploreItems])
+    if (JSON.stringify(user) !== '{}'){
+      getExploreItems(selectedCategory, exploreCount, explorePage, user.id)
+        .then((data) => setExploreItems(data.items))
+        .then(() => setExploreLoading(false))
+    }
+  }, [user, selectedCategory, explorePage])
 
   if (exploreLoading){
     return <Loading />
@@ -64,11 +70,29 @@ const Explore = ({isLoaded}) => {
         {
           exploreItems.map((item, idx) => {
             return (
-              <div>
+              <div key={idx}>
                 <ItemTile item={item}/>
               </div>
             )
           })
+        }
+      </div>
+      <div>
+        {
+          exploreItems.length >= exploreCount && (
+            <div>
+              <span classname={`hover:cursor-pointer`}
+              onClick={handleNextPage}>next</span>
+            </div>
+          )
+        }
+        {
+          explorePage > 1 && (
+            <div>
+              <span className={`hover:cursor-pointer`} 
+              onClick={handleBackPage}>back</span>
+            </div>
+          )
         }
       </div>
     </div>

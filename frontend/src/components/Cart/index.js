@@ -6,6 +6,7 @@ import { getItemsFromIdArr, removeFromCart } from "../../store/cartReducer";
 import ItemTile from "../ItemTile";
 import Loading from "../Loading";
 import { createPaymentIntent } from "../../store/payment";
+import { editItemFunc } from "../../store/item";
 
 const Cart = ({isLoaded}) => {
   const [cartLoading, setCartLoading] = useState(true);
@@ -17,6 +18,7 @@ const Cart = ({isLoaded}) => {
 
   const handleDeleteFromCart = (e, item) => {
     dispatch(removeFromCart(item.id))
+    editItemFunc(item.id, 'in_cart', false)
   }
 
   const proceedtoCheckout = (e) => {
@@ -54,7 +56,7 @@ const Cart = ({isLoaded}) => {
   return (
     <div>
       {
-        cartItems.map((item, idx) => {
+        cartItems.length > 0 && cartItems.map((item, idx) => {
           return (
             <div key={idx}>
               <div className='w-[2em] h-[2em] rounded-full bg-[red]'
