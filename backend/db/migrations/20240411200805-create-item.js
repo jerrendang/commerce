@@ -19,6 +19,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
+      in_cart: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      },
       sell_date: {
         type: Sequelize.DATE
       },

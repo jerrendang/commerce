@@ -66,6 +66,13 @@ module.exports = (sequelize, DataTypes) => {
           foreignKey: 'user_id',
           onDelete: 'CASCADE'
         }
+      ),
+      User.hasMany(
+        models.Order,
+        {
+          foreignKey: 'buyer_id',
+          onDelete: 'CASCADE'
+        }
       )
     }
   }
@@ -96,8 +103,8 @@ module.exports = (sequelize, DataTypes) => {
     hashedPassword: DataTypes.STRING,
     verified: DataTypes.BOOLEAN,
     first_time: DataTypes.BOOLEAN,
-    bank_id: DataTypes.BOOLEAN,
-    stripe_account_id: DataTypes.INTEGER,
+    stripe_verified: DataTypes.BOOLEAN,
+    stripe_account_id: DataTypes.STRING,
     user_photo: DataTypes.BLOB('long'),
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
@@ -106,7 +113,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'User',
     defaultScope: {
       attributes: {
-        exclude: ['hashedPassword', 'createdAt', 'updatedAt', 'email', 'user_photo']
+        exclude: ['hashedPassword', 'createdAt', 'updatedAt', 'user_photo']
       }
     },
     scopes: {

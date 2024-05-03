@@ -31,12 +31,12 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       },
-      bank_id: {
+      stripe_verified: {
         type: Sequelize.BOOLEAN,
         defaultValue: false
       },
       stripe_account_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       user_photo: {
         type: Sequelize.BLOB('long')

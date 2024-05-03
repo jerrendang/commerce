@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const { Op } = require('sequelize');
 
 const { Item } = require('../../db/models');
 
@@ -10,14 +11,21 @@ router.get('/explore', asyncHandler(async (req, res, next) => {
     const {
         category,
         count,
-        page
+        page,
+        user_id
     } = req.query;
-    console.log(req.query)
 
     let items;
 
     if (category === 'All'){
         items = await Item.findAll({
+            where: {
+                user_id: {
+                    [Op.ne]: user_id
+                },
+                sold: false,
+                in_cart: false
+            },
             order: [
                 ['popularity_score', 'DESC'],
             ],
@@ -28,7 +36,12 @@ router.get('/explore', asyncHandler(async (req, res, next) => {
     else{
         items = await Item.findAll({
             where: {
-                category: category
+                category: category,
+                user_id: {
+                    [Op.ne]: user_id
+                },
+                sold: false,
+                in_cart: false
             },
             order: [
                 ['popularity_score', 'DESC'],
@@ -65,6 +78,34 @@ router.get('/', asyncHandler(async (req, res, next) => {
     })
 
     res.json({items});
+}))
+
+router.put('/', asyncHandler(async (req, res, next) => {
+    const {
+        item_id,
+        field,
+        value
+    } = req.query
+    
+    const item = await Item.findByPk(item_id);
+
+    await item.update({[field]: value});
+
+    res.json({item});
+}))
+
+router.delete('/', asyncHandler(async (req, res, next) => {
+    const {
+        item_id
+    } = req.query;
+
+    const item = await Item.destroy({
+        where: {
+            id: item_id
+        }
+    })
+
+    res.json({message: 'success'})
 }))
 
 router.post('/', asyncHandler(async (req, res, next) => {

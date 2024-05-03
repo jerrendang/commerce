@@ -30,6 +30,10 @@ module.exports = (sequelize, DataTypes) => {
       type:DataTypes.BOOLEAN,
       defaultValue: false
     },
+    in_cart: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     sell_date: DataTypes.DATE,
     photo_key: DataTypes.STRING,
     description: DataTypes.STRING,
