@@ -70,7 +70,7 @@ router.get('/', asyncHandler(async (req, res, next) => {
         })
     }
 
-    const redirectLink = process.env.NODE_ENV === 'production' ? '': 'http://localhost:3000/'
+    const redirectLink = process.env.NODE_ENV === 'production' ? process.env.FRONTEND_LINK: 'http://localhost:3000/'
     res.redirect(redirectLink) //////////////////////////////////////////// redirect to production link
 }))
 

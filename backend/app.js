@@ -14,7 +14,7 @@ app.use(express.json())
 
 // cors
 app.use(cors({
-    origin: isProduction ? "https://commerce-7oxpz5yp3-jerrendangs-projects.vercel.app":"http://localhost:3000",
+    origin: isProduction ? process.env.FRONTEND_LINK:"http://localhost:3000",
     credentials: true,
     // methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 }))
