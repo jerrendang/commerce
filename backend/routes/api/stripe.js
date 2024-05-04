@@ -78,7 +78,7 @@ router.get('/success', async (req, res, next) => {
         seller_id
     });
 
-    const redirectLink = process.env.NODE_ENV === 'production' ? process.env.FRONTEND_LINK + 'success' : 'http://localhost:3000/success'
+    const redirectLink = process.env.NODE_ENV === 'production' ? process.env.FRONTEND_LINK + '/success' : 'http://localhost:3000/success'
 
     res.redirect(redirectLink)
 })
