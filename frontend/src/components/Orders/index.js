@@ -40,12 +40,14 @@ const Orders = ({isLoaded}) => {
 
     if (userOrders.length <= 0){
         return (
-            <div>No orders placed yet!</div>
+            <div className='text-[black]'>No orders placed yet!</div>
         )
     }
 
     return (
-    <div>
+    <div className='flex flex-col overflow-x-hidden'>
+        <div className='text-[1.5em] text-[black]'>Orders Placed</div>
+        <div className='flex flex-row flex-wrap overflow-x-hidden'>
         {
             userOrders.map((order, idx) => {
                 return (
@@ -55,6 +57,7 @@ const Orders = ({isLoaded}) => {
                 )
             })
         }
+        </div>
     </div>
     )
 };

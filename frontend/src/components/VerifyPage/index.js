@@ -57,7 +57,7 @@ const VerifyPage = ({isLoaded}) => {
                     {
                         !user.verified && (
                             <div>
-                                email has been sent to {user.email}
+                                Verification email has been sent to {user.email}
                                 {/* send another if not sent within 5 minutes */}
                             </div>
                         )

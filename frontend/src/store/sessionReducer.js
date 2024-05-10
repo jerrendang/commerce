@@ -21,6 +21,19 @@ export const newNotification = async (seller_id, buyer_id, address, item_id) => 
     return data;
 }
 
+export const checkNotifications = async (notifArr) => {
+    const res = await fetcher('/api/session/notification', {
+        method: 'PUT',
+        body: JSON.stringify({
+            notifications: notifArr
+        })
+    })
+
+    const data = res.json();
+
+    return data;
+}
+
 export const getNotifications = async (user_id) => {
     const res = await fetcher(`/api/session/notification?user_id=${user_id}`, {
         method: 'GET'
@@ -109,6 +122,16 @@ export const signup = ( username, email, password ) => async (dispatch) => {
         const {user} = await res.json();
         createStripeAccount(user.id);
         return dispatch(addSession(user));
+    }
+}
+
+export const getUser = async (id) => {
+    const res = await fetcher(`/api/user?id=${id}`, {
+        method: 'GET'
+    })
+
+    if (res.ok){
+        return res.json();
     }
 }
 

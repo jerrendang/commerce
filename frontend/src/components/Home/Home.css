@@ -1,0 +1,29 @@
+.homeSelection {
+    /* background-color: theme('colors.brown.brownblack'); */
+    padding: .25em 1em .25em 1em;
+}
+
+.selectedHome{
+    background-color: theme('colors.brown.brownblack');
+    color: white;
+}
+
+.notSelectedHome{
+    color: black;
+    transition: all .2s;
+}
+
+.notSelectedHome:hover{
+    opacity: .7
+}
+
+.itemInput {
+    border-width: 1px;
+    border-color: theme('colors.brown.brownblack');
+    border-style: solid;
+    width: 100%;
+}
+
+.create-item > *{
+    margin-bottom: 1em;
+}

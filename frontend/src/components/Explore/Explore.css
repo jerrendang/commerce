@@ -1,0 +1,18 @@
+.selectedCategory{
+    color: white;
+    background-color: theme('colors.brown.brownblack')
+}
+
+.notSelected{
+    color: black;
+    border-bottom-color: theme('colors.brown.brownblack');
+    border-bottom-style: solid;
+    border-bottom-width: 2px;
+
+    transition: all .2s;
+}
+
+.notSelected:hover{
+    border-bottom-width: 6px;
+    cursor: pointer;
+}

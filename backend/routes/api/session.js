@@ -42,6 +42,19 @@ router.get('/', restoreUser, asyncHandler(async (req, res, next) => { // restori
     return res.json({});
 }))
 
+router.put('/notification', asyncHandler(async (req, res, next) => {   
+    const {
+        notifications
+    } = req.body;
+
+    for (let i of notifications){
+        const notification = await Notification.findByPk(i.id);
+        await notification.update({checked: true})
+    }
+
+    res.json({message: 'success'})
+}))
+
 router.post('/notification', asyncHandler(async (req, res, next) => {
     // user_id | buyer_id | message | item_id
     const {
@@ -52,7 +65,7 @@ router.post('/notification', asyncHandler(async (req, res, next) => {
     } = req.body
 
     const notification = await Notification.create({
-        user_id,
+        seller_id: user_id,
         buyer_id,
         address,
         item_id

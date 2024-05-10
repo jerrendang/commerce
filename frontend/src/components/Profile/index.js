@@ -13,7 +13,6 @@ const Profile = ({isLoaded}) => {
     const {user} = useSelector(state => state.session);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [file, setFile] = useState();
 
     useEffect(() => {
         if (isLoaded){
@@ -30,10 +29,10 @@ const Profile = ({isLoaded}) => {
         <>
             {
                 (isLoaded && JSON.stringify(user) !== '{}') && (
-                    <div className='flex flex-row'>
+                    <div className='flex flex-col text-[black]'>
                         <div className='h-[100%] w-[100%] flex flex-col justify-center items-center'>
                             <div className='profilePic relative h-[10em] w-[10em] m-[1em]
-                            border-black border-[1px] border-solid flex items-center justify-center overflow-hidden'>
+                            flex items-center justify-center overflow-hidden'>
                                 <img src={profileDefault} alt='profile pic' className='bg-cover h-[100%] w-[100%]' />
                                 {/* <input className='hidden' 
                                     id='photoUpload' type='file' accept="image/png, image/jpeg" onChange={handleFileUpload}></input>

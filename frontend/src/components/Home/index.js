@@ -8,6 +8,7 @@ import ItemTile from '../ItemTile';
 import { fetcher } from '../../store/fetch';
 import { rerender } from '../../store/sessionReducer';
 import categories from '../../assets/clothing_categories.json';
+import './Home.css'
 
 const homeCategories = ["Listed", "Sold"]
 
@@ -29,7 +30,7 @@ const Home = ({isLoaded}) => {
     const handleCreateItem = (e) => {
         e.preventDefault();
         if (!newItem.price || !newItem.name || !newItem.description || !newItem.category || !uploadedFile){
-            setCreateErr('Fill in all the fields.')
+            setCreateErr('Fill in all the fields')
         }
         else{
             const item = {
@@ -104,22 +105,17 @@ const Home = ({isLoaded}) => {
         }
     }, [user, isLoaded, homeCategory])
 
-    return (
-    <div className='h-[100vh] w-auto flex flex-col items-center justify-start'>
-        {/* selection bar */}
-        <div className='flex flex-row'>
-            {
-                homeCategories.map((category, idx) => (
-                    <span key={idx}>
-                        <label className={`hover:cursor-pointer ${homeCategory == idx ? 'bg-[red]': ''}`}
-                        htmlFor={category}>{category}</label>
-                        <button id={category} className='hidden' onClick={(e) => setHomeCategory(idx)}></button>
-                    </span>
-                ))
-            }
-        </div> 
+    if (!user.verified){
+        return (
+            <div>
+                
+            </div>
+        )
+    }
 
-        <form className='flex flex-col' onSubmit={handleCreateItem}>
+    return (
+    <div className='w-[100%] h-fit flex flex-col items-start justify-start text-[black]'>
+        <form className='flex flex-col create-item' onSubmit={handleCreateItem}>
             {
                 createItemErr && (
                     <div>{createItemErr}</div>
@@ -127,19 +123,19 @@ const Home = ({isLoaded}) => {
             }
             <span>
                 <label>Name:</label>
-                <input type='text' onChange={(e) => handleNewItemInput(e, 'name')}/>
+                <input type='text' onChange={(e) => handleNewItemInput(e, 'name')} className='itemInput'/>
             </span>
             <span>
                 <label>Description:</label>
-                <input type='text' onChange={(e) => handleNewItemInput(e, 'description')} />
+                <input type='text' onChange={(e) => handleNewItemInput(e, 'description')} className='itemInput'/>
             </span>
             <span>
                 <label>Price:</label>
-                <input type='number' onChange={(e) => handleNewItemInput(e, 'price')} />
+                <input type='number' onChange={(e) => handleNewItemInput(e, 'price')} className='itemInput'/>
             </span>
             <span>
-                <label>Category</label>
-                <select onChange={(e) => handleNewItemInput(e, 'category')} defaultValue=''>
+                <label>Category</label><br/>
+                <select onChange={(e) => handleNewItemInput(e, 'category')} defaultValue='' className='itemInput'>
                     <option value='' disabled></option>
                     {
                         categories.exploreCategories.slice(1).map((category, idx) => {
@@ -151,13 +147,27 @@ const Home = ({isLoaded}) => {
                 </select>
             </span>
             <span>
+                <label>Photo</label>
                 <input type='file' accept='image/png' onChange={handleUpload} />
             </span>
             <button type='submit'>Create item</button>
         </form>
 
+        {/* selection bar */}
+        <div className='flex flex-row my-[1em] text-[1.5em]'>
+            {
+                homeCategories.map((category, idx) => (
+                    <span key={idx}>
+                        <label className={`hover:cursor-pointer homeSelection ${homeCategory == idx ? 'selectedHome': 'notSelectedHome'}`}
+                        htmlFor={category}>{category}</label>
+                        <button id={category} className='hidden' onClick={(e) => setHomeCategory(idx)}></button>
+                    </span>
+                ))
+            }
+        </div> 
+
         {/* items */}
-        <div>
+        <div className='w-[100%]'>
             {
                 homeFetching && (
                     <Loading size='42'/>
@@ -174,6 +184,11 @@ const Home = ({isLoaded}) => {
                             ))
                         }
                     </div>
+                )
+            }
+            {
+                (!homeFetching && homeItems.length <= 0) && (
+                    <div className='text-[black]'>No items yet.</div>
                 )
             }
         </div>

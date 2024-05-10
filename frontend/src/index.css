@@ -1,3 +1,57 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body{
+    color: white;
+    min-width: 1400px;
+}
+
+input{
+    width: 100%;
+    background-color: white;
+    color: black;
+}
+
+button{
+    transition: transform .2s;
+    border-radius: 3px;
+    background-color: theme('colors.brown.brownblack');
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+    color: white;
+}
+
+svg{
+    transition: transform .2s;
+}
+
+svg:hover{
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+button:hover{
+    transform: scale(1.1);
+}
+
+button:active {
+    transform: scale(.97);
+}
+
+@font-face {
+    font-family: 'norm-r';
+    src: url('./assets/fonts/typetype_-_tt_norms_regular-webfont.woff2');
+}
+
+@font-face {
+    font-family: 'norm-m';
+    src: url('./assets/fonts/typetype_-_tt_norms_medium-webfont.woff2');
+}
+
+@font-face {
+    font-family: 'norm-b';
+    src: url('./assets/fonts/typetype_-_tt_norms_bold-webfont.woff2');
+}

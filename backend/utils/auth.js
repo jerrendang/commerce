@@ -18,7 +18,7 @@ const setTokenCookie = (res, user) => { // sending JWT token
         httpOnly: false,
         path: '/',
         secure: isProduction,
-        sameSite: 'none'
+        sameSite: isProduction ? 'none': 'Lax'
     });
 
     return token;

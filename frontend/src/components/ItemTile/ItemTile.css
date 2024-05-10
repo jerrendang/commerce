@@ -1,0 +1,9 @@
+.itemTile{
+    transition: all .4s;
+    position: relative;
+}
+
+.itemTile:hover{
+    transform: translateY(-10px) translateX(-10px);
+    box-shadow: 10px 10px 1px 1px theme('colors.brown.brownwhite');
+}

@@ -70,19 +70,21 @@ function App() {
     <>
     {
       isLoaded && (
-        <div className="App flex flex-row min-w-[1440px]">
+        <div className="App flex flex-row">
           <Nav isLoaded/>
-          <Routes>
-            <Route exact path='/verify' element={<VerifyPage isLoaded />} />
-            <Route exact path='/home' element={user.stripe_verified ? <Home isLoaded />: <VerifyStripe isLoaded/>} />
-            <Route exact path='/explore' element={<Explore isLoaded />} />
-            <Route exact path='/cart' element={<Cart isLoaded />} />
-            <Route exact path='/profile' element={<Profile isLoaded />} />
-            <Route exacr path='/checkout' element={<Checkout isLoaded />} />
-            <Route exact path='/orders' element={<Orders isLoaded />} />
-            <Route exact path='/success' element={<OrderSuccess />} />
-            <Route exact path='/' element={<Landing isLoaded />} />
-          </Routes>
+          <div className='routes-wrapper overflow-x-visible'>
+            <Routes>
+              <Route exact path='/verify' element={<VerifyPage isLoaded />} />
+              <Route exact path='/home' element={user.stripe_verified ? <Home isLoaded />: <VerifyStripe isLoaded/>} />
+              <Route exact path='/explore' element={<Explore isLoaded />} />
+              <Route exact path='/cart' element={<Cart isLoaded />} />
+              <Route exact path='/profile' element={<Profile isLoaded />} />
+              <Route exacr path='/checkout' element={<Checkout isLoaded />} />
+              <Route exact path='/orders' element={<Orders isLoaded />} />
+              <Route exact path='/success' element={<OrderSuccess />} />
+              <Route exact path='/' element={<Landing isLoaded />} />
+            </Routes>
+          </div>
           <ItemModal isLoaded/>
           <EditItem isLoaded />
       </div>

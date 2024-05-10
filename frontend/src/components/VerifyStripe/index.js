@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react";
 import {useSelector} from 'react-redux';
-import {redirect} from 'react-router-dom'
 
 import { createAccountLink } from "../../store/stripe";
 import Loading from "../Loading";
@@ -18,15 +17,15 @@ const VerifyStripe = ({isLoaded}) => {
         }
     }, [isLoaded])
 
-    useEffect(() => {
-        if (onboardUrl){
-            window.location.href = onboardUrl;
-        }
-    }, [onboardUrl])
-
     if (!onboardUrl){
         return <Loading />
     }
+
+    return (
+        <div className='w-[100%] h-[100%] flex justify-center items-center'>
+            Click <a href={onboardUrl}>here</a> to get onboarded with Stripe and start selling now!
+        </div>
+    )
 };
 
 export default VerifyStripe;

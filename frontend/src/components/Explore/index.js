@@ -6,6 +6,8 @@ import { getExploreItems } from "../../store/item";
 import categories from '../../assets/clothing_categories.json'
 import ItemTile from "../ItemTile";
 
+import './Explore.css';
+
 const {exploreCategories} = categories;
 
 const Explore = ({isLoaded}) => {
@@ -50,15 +52,16 @@ const Explore = ({isLoaded}) => {
   }
 
   return (
-    <div>
+    <div className='w-[100%] relative flex flex-col items-center'>
       {/* selection bar */}
-      <div className='flex flex-row'>
+      <div className='flex flex-row my-[1em] h-[2.2em] w-auto'>
         {
           exploreCategories.map((category, idx) => {
             return (
               <span key={idx} 
-              className={`${selectedCategory === category ? 'bg-[red]': ''} hover: cursor-pointer mx-[1em]`}>
-                <span onClick={e => setSelectedCategory(exploreCategories[idx])}>{category}</span>
+              className={`${selectedCategory === category ? 'selectedCategory': 'notSelected'} hover:cursor-pointer mx-[1em] py-[.25em] px-[1em]`}
+              onClick={e => setSelectedCategory(exploreCategories[idx])}>
+                <span >{category}</span>
               </span>
             )
           })
@@ -66,7 +69,12 @@ const Explore = ({isLoaded}) => {
       </div>
 
       {/* items */}
-      <div>
+      <div className='p-[1em] flex flex-row flex-wrap items-start w-[100%]'>
+        {
+          exploreItems.length <= 0 && (
+            <div className='text-[black]'>No items yet.</div>
+          )
+        }
         {
           exploreItems.map((item, idx) => {
             return (

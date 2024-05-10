@@ -4,11 +4,13 @@ import { thunk } from 'redux-thunk';
 import { sessionReducer } from './sessionReducer';
 import { itemModalReducer } from './itemModal';
 import { cartReducer } from './cartReducer';
+import { navReducer } from './navReducer';
 
 const rootReducer = combineReducers({
     session: sessionReducer,
     itemModal: itemModalReducer,
-    cart:cartReducer
+    cart:cartReducer,
+    nav: navReducer
 });
 
 const isProduction = process.env.NODE_ENV === 'production';

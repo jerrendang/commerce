@@ -54,15 +54,20 @@ const Cart = ({isLoaded}) => {
     return <Loading />
   }
   return (
-    <div>
+    <div className='flex flex-col text-[black]'>
+      <div className='text-[2em] '>Cart</div>
+      <div className='flex flex-row'>
       {
         cartItems.length > 0 && cartItems.map((item, idx) => {
           return (
-            <div key={idx}>
-              <div className='w-[2em] h-[2em] rounded-full bg-[red]'
-              onClick={e => handleDeleteFromCart(e, item)}
-              >{idx}</div>
-              <ItemTile item={item}/>
+            <div key={idx} className='m-[1em]'>
+              <div className='pointer-events-none'>
+                <ItemTile item={item}/>
+              </div>
+              <div className='w-fit bg-brown-brownblack text-[white] px-[1em]
+              hover:cursor-pointer'
+                onClick={e => handleDeleteFromCart(e, item)}
+              >Remove</div>
             </div>
           )
         })
@@ -72,9 +77,10 @@ const Cart = ({isLoaded}) => {
           <div>No items in cart yet!</div>
         )
       }
+      </div>
       {
         cartItems.length > 0 && (
-          <div onClick={proceedtoCheckout}>Proceed to checkout</div>
+          <div onClick={proceedtoCheckout} className='m-[1em] bg-brown-brownblack text-[white] w-fit px-[1em]'>Proceed to checkout</div>
         )
       }
     </div>
