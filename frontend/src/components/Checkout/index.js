@@ -69,9 +69,9 @@ const Checkout = ({isLoaded}) => {
     }
 
     return (
-        <form onSubmit={handleAddressSubmit}>
+        <form onSubmit={handleAddressSubmit} className='text-[black]'>
             <label>Where should we send your order?</label>
-            <input type='text' onChange={e => setAddress(e.target.value)}></input>
+            <input type='text' onChange={e => setAddress(e.target.value)} className='bordered'></input>
             <button type='submit'>Submit</button>
         </form>
     )
