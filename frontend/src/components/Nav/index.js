@@ -7,6 +7,7 @@ import { getNotifications } from "../../store/sessionReducer";
 import { changePage } from "../../store/navReducer";
 import './Nav.css';
 
+import logo from '../../assets/logo.png'
 
 const Nav = ({isLoaded}) => {
     const [showNav, setShowNav] = useState(false);
@@ -58,6 +59,10 @@ const Nav = ({isLoaded}) => {
     {
         showNav && (
             <div className='flex flex-col fixed bg-brown-brownblack w-[10em] h-[100vh] p-[1em] color-[white] z-[2]'>
+                <span>
+                    <img src={logo} alt='logo'>
+                    </img>
+                </span>
                 <span><button className={`text-[1.5em] ${page === 0 ? 'pageSelected': ''}`}
                 onClick={e => handlePageChange('/home', 0)}>Your Shop</button></span>
 
