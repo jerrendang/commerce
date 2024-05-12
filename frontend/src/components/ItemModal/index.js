@@ -42,10 +42,10 @@ const ItemModal = ({isLoaded}) => {
 
     if (JSON.stringify(user) !== '{}' && modalSeller){
     return (
-    <div className={`${show ? '' : 'hidden'} absolute z-[2] w-[100vw] h-[100vh] bg-[rgba(0,0,0,.6)] flex items-center justify-center
+    <div className={`${show ? 'flex' : 'hidden'} fixed z-[2] w-[100vw] h-[100vh] bg-[rgba(0,0,0,.6)] items-center justify-center
     hover:cursor-pointer`}
     onClick={handleBackgroundClick}>
-        <div className='h-[40%] w-[40%] flex flex-row bg-brown-brownblack text-[white]
+        <div className='h-fit w-[40%] flex flex-row bg-brown-brownblack text-[white]
         hover:cursor-default'
         onClick={e => e.stopPropagation()}>
             <div className='h-[100%] w-[40%] flex justify-center items-center p-[1em]'>

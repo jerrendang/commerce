@@ -56,7 +56,7 @@ const VerifyPage = ({isLoaded}) => {
                     }
                     {
                         !user.verified && (
-                            <div>
+                            <div className='text-[black]'>
                                 Verification email has been sent to {user.email}
                                 {/* send another if not sent within 5 minutes */}
                             </div>

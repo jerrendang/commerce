@@ -22,7 +22,7 @@ const VerifyStripe = ({isLoaded}) => {
     }
 
     return (
-        <div className='w-[100%] h-[100%] flex justify-center items-center'>
+        <div className='w-[100%] h-[100%] flex justify-center items-center text-[black]'>
             Click <a href={onboardUrl}>here</a> to get onboarded with Stripe and start selling now!
         </div>
     )
